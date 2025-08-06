@@ -12,20 +12,20 @@ Strands Agents를 활용한 위트있는 신약개발 관련 AI 어시스턴트
 ```
 drug-discovery-agents/
 ├── agents/                     # AI 에이전트 모듈
-│   ├── drug_development_agent.py    # 메인 신약개발 에이전트
+│   ├── drug_development_agent.py    # 메인 신약개발 에이전트 (예시)
 │   ├── meta_tooling_agent.py        # 메타툴링 에이전트 (도구 생성)
-│   └── agent_skeleton.py            # 에이전트 템플릿 (해커톤용)
+│   └── agent_skeleton.py            # 에이전트 템플릿 (starter file)
 ├── tools/                      # 도구 모듈
-│   ├── molecular_calculator.py      # 분자량 계산기
-│   └── tool_skeleton.py             # 도구 템플릿 (해커톤용)
+│   ├── molecular_calculator.py      # 분자량 계산기 (예시)
+│   └── tool_skeleton.py             # 도구 템플릿 (starter file)
 ├── config/                     # 설정 파일
-│   └── settings.py                  # 애플리케이션 설정
+│   └── settings.py               
 ├── data/                       # 데이터 및 이미지
 │   └── images/
-│       ├── ui.png                   # UI 스크린샷
-│       └── peccy.jpg                # 챗봇 아바타
-├── app.py                      # Streamlit 메인 애플리케이션
-├── requirements.txt            # Python 패키지 의존성
+│       ├── ui.png                   
+│       └── peccy.jpg                
+├── app.py                     # Streamlit 메인 애플리케이션
+├── requirements.txt           # Python 패키지 의존성
 ├── .env.example               # 환경변수 예시 파일
 └── README.md                  # 프로젝트 문서
 ```
