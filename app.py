@@ -89,7 +89,7 @@ async def process_streaming_response(agent, question, message_placeholder):
 def run_streaming_agent(agent, question):
     """스트리밍 에이전트 실행 - 단순화"""
     # Streamlit의 chat_message 컨테이너 사용 (Peccy 아바타)
-    with st.chat_message("assistant", avatar="peccy.jpg"):
+    with st.chat_message("assistant", avatar="data/images/peccy.jpg"):
         message_placeholder = st.empty()
         
         # 비동기 함수를 동기적으로 실행
@@ -119,7 +119,7 @@ def display_chat_message(role, content):
             st.markdown(content_str)
     else:
         # Peccy 이미지를 어시스턴트 아바타로 사용
-        with st.chat_message("assistant", avatar="peccy.jpg"):
+        with st.chat_message("assistant", avatar="data/images/peccy.jpg"):
             st.markdown(content_str)
 
 def main():
@@ -260,7 +260,7 @@ def main():
         except Exception as e:
             error_msg = f"실험 실패: {e}\n\n다시 시도해주세요. 아마 카페인이 부족한 것 같네요!"
             st.session_state.messages.append({"role": "assistant", "content": error_msg})
-            with st.chat_message("assistant", avatar="peccy.jpg"):
+            with st.chat_message("assistant", avatar="data/images/peccy.jpg"):
                 st.markdown(error_msg)
         
         # 페이지 새로고침으로 최신 메시지 표시

@@ -97,7 +97,7 @@ Remember: Your primary job is to help users use existing tools efficiently, not 
 
 # Create our agent with the necessary tools and implicit tool calling enabled
 bedrock_model = BedrockModel(
-    model_id=Settings.get_model_id("claude-sonnet-4"),
+    model_id=Settings.get_model_id("Claude Sonnet 4.0"),
     region_name=Settings.AWS_REGION
 )
 agent = Agent(

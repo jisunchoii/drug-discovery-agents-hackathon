@@ -17,8 +17,8 @@ class Settings:
     
     # 사용 가능한 모델들
     AVAILABLE_MODELS = {
-        "Claude Sonnet 4.0": "anthropic.claude-sonnet-4-20250514-v1:0",
-        "Claude 3.7 Sonnet": "anthropic.claude-3-7-sonnet-20250219-v1:0",
+        "Claude Sonnet 4.0": "us.anthropic.claude-sonnet-4-20250514-v1:0",
+        "Claude 3.7 Sonnet": "us.anthropic.claude-3-7-sonnet-20250219-v1:0",
         "Claude 3.5 Sonnet v2": "anthropic.claude-3-5-sonnet-20241022-v2:0",
         "Claude 3.5 Haiku": "anthropic.claude-3-5-haiku-20241022-v1:0", 
     }
