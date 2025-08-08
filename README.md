@@ -65,6 +65,22 @@ streamlit run app.py
 deactivate
 ```
 
+## Q CLI 프로필 및 컨텍스트 설정
+터미널 상에서 Q CLI를 설정하여 자연어 기반으로 에이전트 개발을 수행할 수 있습니다.
+
+### 초기 설정
+```bash
+# Q CLI 접근
+q chat
+
+# 컨텍스트 파일 추가
+/context add context/context.md
+
+# 설정 확인
+"현재 프로젝트 구조를 설명해주세요"
+"어떤 것부터 시작하면 될까요?"
+```
+
 > **💡 참고**: 가상환경을 사용하면 시스템 Python 환경과 분리되어 패키지 충돌을 방지할 수 있습니다.
 
 ## Starter 기능
