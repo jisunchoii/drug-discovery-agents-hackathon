@@ -60,7 +60,7 @@ def create_agent(model_name, use_history=True):
         return None, str(e)
 
 async def process_streaming_response(agent, question, message_placeholder):
-    """줄바꿈이 포함된 스트리밍 응답 처리"""
+    """마크다운 포맷팅을 유지하는 스트리밍 응답 처리"""
     full_response = ""
     
     try:
@@ -69,22 +69,19 @@ async def process_streaming_response(agent, question, message_placeholder):
             if isinstance(event, dict) and "data" in event:
                 data = event["data"]
                 full_response += data
-                # 줄바꿈을 추가해서 표시
-                formatted_response = full_response.replace('. ', '.\n\n').replace('! ', '!\n\n').replace('? ', '?\n\n')
-                message_placeholder.markdown(formatted_response)
+                # 원본 마크다운 포맷팅 유지하며 실시간 표시
+                message_placeholder.markdown(full_response)
             elif isinstance(event, str):
                 full_response += event
-                # 줄바꿈을 추가해서 표시
-                formatted_response = full_response.replace('. ', '.\n\n').replace('! ', '!\n\n').replace('? ', '?\n\n')
-                message_placeholder.markdown(formatted_response)
+                # 원본 마크다운 포맷팅 유지하며 실시간 표시
+                message_placeholder.markdown(full_response)
                 
     except Exception as e:
         logger.error(f"스트리밍 응답 처리 중 오류: {e}")
         message_placeholder.markdown("죄송합니다. 응답 생성 중 오류가 발생했습니다.")
     
-    # 최종 응답도 포맷팅해서 반환
-    final_formatted_response = full_response.replace('. ', '.\n\n').replace('! ', '!\n\n').replace('? ', '?\n\n')
-    return final_formatted_response
+    # 최종 응답 반환 (원본 포맷팅 유지)
+    return full_response
 
 def run_streaming_agent(agent, question):
     """스트리밍 에이전트 실행 - 단순화"""
