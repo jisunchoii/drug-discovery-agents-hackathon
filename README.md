@@ -30,39 +30,9 @@ drug-discovery-agents/
 └── README.md                  # 프로젝트 문서
 ```
 
-## 설치 및 실행
-
-### 1. 가상환경 생성 및 활성화
-```bash
-# Python 가상환경 생성
-python3 -m venv venv
-
-# 가상환경 활성화 (Linux/Mac)
-source venv/bin/activate
-
-# 가상환경 활성화 (Windows)
-# venv\Scripts\activate
-```
-
-### 2. 패키지 설치 및 환경 설정
-```bash
-# 필요한 패키지 설치
-pip install -r requirements.txt
-
-# 환경 변수 파일 복사 및 설정
-cp .env.example .env
-# .env 파일에 AWS API 키 설정
-```
-
-### 3. 애플리케이션 실행
+## 설치 및 실행 
 ```bash
 streamlit run app.py
-```
-
-### 4. 가상환경 종료
-```bash
-# 작업 완료 후 가상환경 비활성화
-deactivate
 ```
 
 ## Q CLI 프로필 및 컨텍스트 설정
