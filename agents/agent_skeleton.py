@@ -19,7 +19,7 @@
 import boto3
 from strands import Agent
 from strands.models import BedrockModel
-from config import Settings
+from config.settings import Settings
 
 # 여기에 커스텀 도구들을 import하세요
 # from tools.your_custom_tool import your_custom_tool
