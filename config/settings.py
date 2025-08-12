@@ -15,16 +15,16 @@ class Settings:
     # AWS 설정 - IAM 역할 또는 AWS CLI 프로필 사용
     AWS_REGION = os.getenv("AWS_REGION", "us-west-2")
     
-    # 사용 가능한 모델들
+    # 사용 가능한 모델들 (us-east-1 기준 : 리전에 따른 변경 필요)
     AVAILABLE_MODELS = {
         "Claude Sonnet 4.0": "us.anthropic.claude-sonnet-4-20250514-v1:0",
         "Claude 3.7 Sonnet": "us.anthropic.claude-3-7-sonnet-20250219-v1:0",
-        "Claude 3.5 Sonnet v2": "anthropic.claude-3-5-sonnet-20241022-v2:0",
-        "Claude 3.5 Haiku": "anthropic.claude-3-5-haiku-20241022-v1:0", 
+        "Claude 3.5 Sonnet v2": "us.anthropic.claude-3-5-sonnet-20241022-v2:0",
+        "Claude 3.5 Haiku": "us.anthropic.claude-3-5-haiku-20241022-v1:0", 
     }
     
     # 기본 모델
-    DEFAULT_MODEL = "anthropic.claude-sonnet-4-20250514-v1:0"
+    DEFAULT_MODEL = "us.anthropic.claude-sonnet-4-20250514-v1:0"
     DEFAULT_TEMPERATURE = 0.3
     
     @classmethod
