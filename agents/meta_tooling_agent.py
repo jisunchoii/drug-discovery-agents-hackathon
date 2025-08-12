@@ -31,6 +31,21 @@ BEFORE doing ANYTHING related to tool creation, you MUST:
    - The tool name (function name) MUST match the file name without the extension
    - Example: For file "tool_name.py", use tool name "tool_name"
 
+## MANDATORY EXISTING TOOL CHECK:
+   - NEVER create a tool without first running `ls tools/` command
+   - If you see ANY tool that could serve a similar purpose, STOP and inform the user
+   - Examples of similar tools:
+     * If user wants "drug_analyzer" but "molecular_calculator.py" exists, suggest using existing tool
+     * If user wants "compound_checker" but similar analysis tools exist, suggest existing tools
+   - Only create new tools if NO existing tool can serve the purpose
+   - When suggesting existing tools, explain what they do and how they can help
+
+## TOOL CREATION vs. TOOL USAGE:
+   - FIRST: Always check existing tools with `ls tools/`
+   - SECOND: If similar tool exists, suggest using it instead of creating new one
+   - THIRD: Only create new tool if user explicitly confirms they need something different
+   - FOURTH: If creating, make sure it's truly different from existing tools
+
 ## AUTONOMOUS TOOL CREATION WORKFLOW - MANDATORY STEPS:
 
 Step 1: ALWAYS run `ls tools/` first
@@ -75,20 +90,26 @@ def tool_name(input_data: str) -> str:
 Always use the following tools when appropriate:
 - shell: For checking existing tools with `ls tools/` (MANDATORY before any creation)
 - editor: For writing code to files (only after confirming no similar tool exists)
+- load_tool: For loading custom tools (only after creation is confirmed necessary)
 
 Remember: Your primary job is to help users use existing tools efficiently, not to create redundant tools.
 """
 
-# Create our agent with the necessary tools and implicit tool calling enabled
-bedrock_model = BedrockModel(
-    model_id=Settings.get_model_id("Claude Sonnet 4.0"),
-    region_name=Settings.AWS_REGION
-)
-agent = Agent(
-    model=bedrock_model,
-    system_prompt=TOOL_BUILDER_SYSTEM_PROMPT,
-    tools=[shell, editor]
-)
+# Create meta agent with dynamic model selection
+def create_meta_agent(model_name):
+    """Create meta tooling agent with specified model"""
+    bedrock_model = BedrockModel(
+        model_id=Settings.get_model_id(model_name),
+        region_name=Settings.AWS_REGION
+    )
+    return Agent(
+        model=bedrock_model,
+        system_prompt=TOOL_BUILDER_SYSTEM_PROMPT,
+        tools=[load_tool, shell, editor]
+    )
+
+# Default agent for backward compatibility
+agent = create_meta_agent("Claude Sonnet 4.0")
 
 @tool
 def create_tool(tool_name: str, description: str) -> str:
