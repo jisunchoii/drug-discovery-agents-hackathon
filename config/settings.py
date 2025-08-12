@@ -12,7 +12,7 @@ load_dotenv()
 class Settings:
     """애플리케이션 설정 클래스"""
     
-    # AWS 설정
+    # AWS 설정 - IAM 역할 또는 AWS CLI 프로필 사용
     AWS_REGION = os.getenv("AWS_REGION", "us-west-2")
     
     # 사용 가능한 모델들
@@ -36,9 +36,9 @@ class Settings:
     
     @classmethod
     def validate(cls):
-        """AWS 자격증명 확인 (boto3가 자동으로 처리)"""
-        # boto3는 자동으로 AWS 자격증명을 찾습니다:
-        # 1. 환경변수 (AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY)
+        """AWS 자격증명 확인 - boto3 자동 처리"""
+        # boto3가 자동으로 자격증명을 찾습니다:
+        # 1. IAM 역할 (EC2/Lambda/ECS 등)
         # 2. AWS credentials 파일 (~/.aws/credentials)
-        # 3. IAM 역할 (EC2에서 실행 시)
+        # 3. AWS config 파일 (~/.aws/config)
         return True
