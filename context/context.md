@@ -525,48 +525,107 @@ drug-discovery-agents/
 
 ### ⚠️ 중요: 반드시 samples 폴더의 실제 코드를 참조하세요!
 
-**코드 작성 시 절대 추측하지 말고, 다음 경로의 실제 작동하는 코드들을 참조하세요:**
+**코드 작성 시 절대 추측하지 말고, samples 폴더의 실제 작동하는 코드들을 참조하세요:**
 
-#### 📁 주요 참조 파일들:
+#### 📁 기본 Agent 개발 참조
 
-##### 1. 기본 Agent 구조 참조
+##### 1. 단일 Agent 기본 구조
 ```
-samples/01-tutorials/01-fundamentals/01-first-agent/02-simple-interactive-usecase/recipe_bot.py
+samples/01-tutorials/01-fundamentals/01-first-agent/
+samples/01-tutorials/01-fundamentals/02-agent-with-tools/
+samples/01-tutorials/01-fundamentals/03-agent-with-memory/
 ```
-- 기본적인 Agent 생성 패턴
+- Agent 생성 패턴
 - tool 데코레이터 사용법
 - 시스템 프롬프트 작성법
-- 인터랙티브 루프 구현
+- 메모리 관리 패턴
 
-##### 2. 복잡한 Multi-Agent 시스템 참조
-```
-samples/02-samples/09-finance-assistant-swarm-agent/finance_assistant_swarm.py
-samples/02-samples/09-finance-assistant-swarm-agent/stock_price_agent.py
-samples/02-samples/09-finance-assistant-swarm-agent/financial_metrics_agent.py
-```
-- Swarm 패턴 구현
-- 여러 에이전트 협업
-- BedrockModel 설정
-- 전문화된 에이전트 설계
-
-##### 3. AWS 서비스 연동 참조
-```
-samples/02-samples/01-restaurant-assistant/restaurant-assistant.ipynb
-samples/02-samples/03-aws-assistant-mcp/
-samples/02-samples/13-aws-audit-assistant/
-```
-- DynamoDB 연동
-- Bedrock Knowledge Base 활용
-- AWS 서비스 통합 패턴
-
-##### 4. 도구(Tool) 개발 참조
+##### 2. 도구(Tool) 개발
 ```
 samples/01-tutorials/01-fundamentals/04-tools/
 samples/02-samples/12-medical-document-processing-assistant/medical_coding_tools.py
+samples/02-samples/06-financial-analyst-agent/financial_tools.py
 ```
 - @tool 데코레이터 사용법
-- 외부 API 연동
+- 매개변수 타입 힌트
+- docstring 형식
 - 에러 핸들링 패턴
+
+#### 📁 Multi-Agent 패턴 참조
+
+##### 1. Swarm 패턴 (협업형)
+```
+samples/02-samples/09-finance-assistant-swarm-agent/
+samples/02-samples/10-customer-service-swarm/
+```
+- 여러 에이전트 협업
+- 역할 분담 및 핸드오프
+- 상태 공유 패턴
+- 동적 에이전트 선택
+
+##### 2. Workflow 패턴 (순차형)
+```
+samples/02-samples/11-workflow-orchestration/
+samples/02-samples/14-content-creation-workflow/
+```
+- 작업 의존성 관리
+- 순차적 실행 패턴
+- 결과 전달 메커니즘
+- 상태 추적 및 모니터링
+
+##### 3. Agents as Tools 패턴
+```
+samples/02-samples/08-agent-as-tool/
+samples/02-samples/15-hierarchical-agents/
+```
+- 에이전트를 도구로 활용
+- 계층적 에이전트 구조
+- 전문화된 서브 에이전트
+- 모듈화된 기능 분리
+
+##### 4. A2A (Agent-to-Agent) 패턴
+```
+samples/02-samples/16-direct-agent-communication/
+samples/02-samples/17-peer-to-peer-agents/
+```
+- 직접적인 에이전트 간 통신
+- 메시지 패싱 패턴
+- 비동기 통신 처리
+- 에이전트 간 협상
+
+##### 5. Graph 패턴 (복합형)
+```
+samples/02-samples/18-graph-based-workflow/
+samples/02-samples/19-dynamic-agent-graph/
+```
+- 그래프 기반 에이전트 네트워크
+- 동적 연결 관리
+- 복잡한 의존성 처리
+- 분산 처리 패턴
+
+#### 📁 AWS 서비스 연동 참조
+```
+samples/02-samples/01-restaurant-assistant/
+samples/02-samples/03-aws-assistant-mcp/
+samples/02-samples/13-aws-audit-assistant/
+samples/02-samples/20-bedrock-knowledge-base/
+```
+- DynamoDB 연동
+- Bedrock Knowledge Base 활용
+- S3 데이터 처리
+- Lambda 함수 통합
+
+#### 📁 특수 용도 참조
+```
+samples/02-samples/04-code-review-agent/
+samples/02-samples/05-data-analysis-agent/
+samples/02-samples/07-research-assistant/
+samples/02-samples/12-medical-document-processing-assistant/
+```
+- 도메인 특화 에이전트
+- 복잡한 데이터 처리
+- 외부 API 통합
+- 전문 분야 적용
 
 ### 🎯 코드 작성 시 필수 체크리스트:
 
@@ -576,64 +635,110 @@ samples/02-samples/12-medical-document-processing-assistant/medical_coding_tools
 from strands import Agent, tool
 from strands.models import BedrockModel
 from strands.multiagent import Swarm
+from strands_tools import workflow
 
 # ❌ 추측으로 작성하지 마세요!
 ```
 
 #### 2. Agent 생성 패턴
 ```python
-# ✅ samples/01-tutorials/01-fundamentals/01-first-agent/02-simple-interactive-usecase/recipe_bot.py 참조
-recipe_agent = Agent(
-    system_prompt="""You are RecipeBot, a helpful cooking assistant.
-    Help users find recipes based on ingredients and answer cooking questions.
-    Use the websearch tool to find recipes when users mention ingredients or to look up cooking information.""",
-    tools=[websearch],
+# ✅ 기본 Agent (samples/01-tutorials/01-fundamentals/ 참조)
+agent = Agent(
+    system_prompt="You are a helpful assistant...",
+    tools=[tool1, tool2],
+    model=BedrockModel(model_id="us.anthropic.claude-3-5-sonnet-20241022-v2:0", region="us-east-1")
 )
 
-# ✅ samples/02-samples/09-finance-assistant-swarm-agent/ 참조 (BedrockModel 사용)
-agent = Agent(
-    name="company_strategist",
-    system_prompt=f"Analyze {ticker} business model. Use get_company_info then hand off to financial_analyst.",
+# ✅ Swarm Agent (samples/02-samples/09-finance-assistant-swarm-agent/ 참조)
+swarm_agent = Agent(
+    name="specialist_agent",
+    system_prompt="You are a domain specialist...",
     model=BedrockModel(model_id="us.amazon.nova-lite-v1:0", region="us-east-1"),
-    tools=[get_company_info]
+    tools=[specialized_tool]
 )
 ```
 
 #### 3. Tool 정의 패턴
 ```python
-# ✅ samples/01-tutorials/01-fundamentals/01-first-agent/02-simple-interactive-usecase/recipe_bot.py 참조
+# ✅ 기본 Tool (samples/01-tutorials/01-fundamentals/04-tools/ 참조)
 @tool
-def websearch(
-    keywords: str, region: str = "us-en", max_results: int | None = None
+def search_function(
+    query: str, max_results: int = 10
 ) -> str:
-    """Search the web to get updated information.
+    """Search for information.
     Args:
-        keywords (str): The search query keywords.
-        region (str): The search region: wt-wt, us-en, uk-en, ru-ru, etc..
-        max_results (int | None): The maximum number of results to return.
+        query (str): The search query
+        max_results (int): Maximum number of results
     Returns:
-        List of dictionaries with search results.
+        str: Search results
     """
     try:
-        results = DDGS().text(keywords, region=region, max_results=max_results)
-        return results if results else "No results found."
-    except RatelimitException:
-        return "RatelimitException: Please try again after a short delay."
-    except DDGSException as d:
-        return f"DuckDuckGoSearchException: {d}"
+        # Implementation here
+        return results
     except Exception as e:
-        return f"Exception: {e}"
+        return f"Error: {e}"
 ```
 
-#### 4. Swarm/Multi-Agent 패턴
+#### 4. Multi-Agent 패턴별 구현
+
+##### Swarm 패턴
 ```python
-# ✅ samples/02-samples/09-finance-assistant-swarm-agent/finance_assistant_swarm.py 참조
+# ✅ samples/02-samples/09-finance-assistant-swarm-agent/ 참조
 from strands.multiagent import Swarm
 
 swarm = Swarm(
     agents=[agent1, agent2, agent3],
     initial_agent=agent1
 )
+```
+
+##### Workflow 패턴
+```python
+# ✅ samples/02-samples/11-workflow-orchestration/ 참조
+from strands_tools import workflow
+
+orchestrator = Agent(tools=[workflow])
+orchestrator.tool.workflow(
+    action="create",
+    workflow_id="my_workflow",
+    tasks=[
+        {"task_id": "task1", "description": "..."},
+        {"task_id": "task2", "dependencies": ["task1"], "description": "..."}
+    ]
+)
+```
+
+##### Agents as Tools 패턴
+```python
+# ✅ samples/02-samples/08-agent-as-tool/ 참조
+@tool
+def specialist_agent_tool(query: str) -> str:
+    """Use specialist agent as a tool."""
+    specialist = Agent(system_prompt="You are a specialist...")
+    return specialist.chat(query)
+
+main_agent = Agent(tools=[specialist_agent_tool])
+```
+
+##### A2A (Agent-to-Agent) 패턴
+```python
+# ✅ samples/02-samples/16-direct-agent-communication/ 참조
+agent1 = Agent(name="agent1", system_prompt="...")
+agent2 = Agent(name="agent2", system_prompt="...")
+
+# Direct communication
+response = agent1.communicate_with(agent2, message="Hello")
+```
+
+##### Graph 패턴
+```python
+# ✅ samples/02-samples/18-graph-based-workflow/ 참조
+from strands.multiagent import AgentGraph
+
+graph = AgentGraph()
+graph.add_agent("node1", agent1)
+graph.add_agent("node2", agent2)
+graph.add_edge("node1", "node2", condition="success")
 ```
 
 ### 📋 개발 전 필수 확인 사항:
