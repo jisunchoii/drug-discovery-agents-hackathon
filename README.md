@@ -48,6 +48,13 @@ chmod +x run.sh
 - 환경변수 파일 생성 (없는 경우)
 - Streamlit 애플리케이션 실행
 
+## 코드 생성 시 참조를 위한 Strands Agents 샘플 코드 클론
+Q CLI를 활용해 코드를 생성할 때, 정확한 코드 생성을 위해 공식 샘플 코드를 클론합니다.
+
+```bash
+git clone https://github.com/strands-agents/samples.git
+```
+
 ## Q CLI 프로필 및 컨텍스트 설정
 터미널 상에서 Q CLI를 설정하여 자연어 기반으로 에이전트 개발을 수행할 수 있습니다.
 
